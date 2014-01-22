@@ -1,19 +1,22 @@
-@(currentPage: Page[(Computer, Option[Company])], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
+@import dtos._
+@(currentPage: Page[(ComputerDto, Option[CompanyDto])], currentOrderBy: Int, currentFilter: String)( implicit flash: play.api.mvc.Flash)
 
-    @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-        routes.Application.list(
-            newPage,
-            newOrderBy.map {
-                orderBy => if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
-            }.getOrElse(currentOrderBy),
-            currentFilter)
-    }
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+    routes.Application.list(
+        newPage,
+        newOrderBy.map {
+            orderBy => if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+        }.getOrElse(currentOrderBy),
+        currentFilter)
+}
 
-    @header(orderBy: Int, title: String) = {
-        <th class="col@orderBy header @if(math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
-            <a href="@link(0, Some(orderBy))">@title</a>
-        </th>
-    }
+@header(orderBy: Int, title: String) = {
+    <th class="col@orderBy header @if(math.abs(currentOrderBy) == orderBy) @{
+        if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"
+    }">
+        <a href="@link(0, Some(orderBy))">@title</a>
+    </th>
+}
 
 @main {
     <h1>@Messages("computers.list.title", currentPage.total)</h1>
@@ -49,13 +52,19 @@
                 <tr>
                     <td><a href="@routes.Application.edit(computer.id.get)">@computer.name</a></td>
                     <td>
-                    @computer.introduced.map(_.format("yyyy-MM-dd")).getOrElse {<em>-</em>}
+                    @computer.introduced.map(_.format("yyyy-MM-dd")).getOrElse {
+                        <em>-</em>
+                    }
                     </td>
                     <td>
-                    @computer.discontinued.map(_.format("yyyy-MM-dd")).getOrElse {<em>-</em>}
+                    @computer.discontinued.map(_.format("yyyy-MM-dd")).getOrElse {
+                        <em>-</em>
+                    }
                     </td>
                     <td>
-                    @company.map(_.name).getOrElse {<em>-</em>}
+                    @company.map(_.name).getOrElse {
+                        <em>-</em>
+                    }
                     </td>
                 </tr>
             }

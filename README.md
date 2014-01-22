@@ -1,4 +1,4 @@
 computer-manager-jpa
 ====================
 
-Playframework sample using JPA
+Playframework sample using JPA (Hibernate)
