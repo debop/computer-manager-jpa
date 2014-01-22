@@ -27,3 +27,17 @@ class Company extends HibernateEntity[Long] {
     // @Constraints.Required
     var name: String = _
 }
+
+object Company {
+
+    def apply(id: Long, name: String) = {
+        val company = new Company
+        company.setId(id)
+        company.name = name
+        company
+    }
+
+    def unapply(company: Company) = {
+        Some(company.id, company.name)
+    }
+}

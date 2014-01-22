@@ -9,7 +9,6 @@ import repository.{CompanyRepository, ComputerRepository}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.{Sort, PageRequest}
 import models.Computer
-import dtos.ComputerDto
 import kr.debop4s.core.utils.Mappers
 
 @Component
@@ -27,7 +26,7 @@ class Application extends Controller {
             "introduced" -> optional(date("yyyy-MM-dd")),
             "discontinued" -> optional(date("yyyy-MM-dd")),
             "company" -> optional(longNumber)
-        )(ComputerDto.apply)(ComputerDto.unapply)
+        )(Computer.apply)(Computer.unapply)
     )
 
 

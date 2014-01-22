@@ -1,5 +1,4 @@
-@import dtos._
-@(currentPage: Page[(ComputerDto, Option[CompanyDto])], currentOrderBy: Int, currentFilter: String)( implicit flash: play.api.mvc.Flash)
+@(currentPage: Page[(Computer, Option[Company])], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
 
 @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
     routes.Application.list(

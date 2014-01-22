@@ -16,7 +16,7 @@ class CompanyRepository {
     @Autowired val sessionFactory: SessionFactory = null
     lazy val dao: HibernateDao = new HibernateDao(sessionFactory)
 
-    def findById(id: Long): Company = dao.get(classOf[Company], id)
+    def findById(id: Long): Option[Company] = Some(dao.get(classOf[Company], id))
 
     def options: List[(String, String)] = {
         val companies = dao.findAll(classOf[Company])
