@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @Configuration
 @EnableTransactionManagement
 // @EnableJpaRepositories(basePackages = Array("repository"))
-@ComponentScan(basePackages = Array("controllers", "services", "repository"))
+@ComponentScan(basePackages = Array("controllers", "services", "domains.repository"))
 @Import(Array(classOf[JpaHSqlConfiguration]))
 class SpringConfiguration {
 

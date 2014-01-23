@@ -1,14 +1,15 @@
-package repository
+package domains.repository
 
-import org.springframework.stereotype.Repository
-import org.springframework.beans.factory.annotation.Autowired
-import org.hibernate.SessionFactory
-import kr.debop4s.data.hibernate.repository.HibernateDao
-import models.Computer
-import org.springframework.data.domain.{Page, Pageable}
-import org.hibernate.criterion.{MatchMode, Restrictions, DetachedCriteria}
+import domains.models.{Company, Computer, Pager}
 import kr.debop4s.core.utils.Strings
+import kr.debop4s.data.hibernate.repository.HibernateDao
+import org.hibernate.criterion.{MatchMode, Restrictions, DetachedCriteria}
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.{Page, Pageable}
+import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
+import scala.collection.JavaConversions._
 
 /**
  * ComputerRepository
@@ -18,8 +19,9 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class ComputerRepository {
 
-    @Autowired val sessionFactory: SessionFactory = null
-    lazy val dao: HibernateDao = new HibernateDao(sessionFactory)
+    lazy val log = LoggerFactory.getLogger(getClass)
+
+    @Autowired val dao: HibernateDao = null
 
     def update(computer: Computer) {
         dao.update(computer)
@@ -38,10 +40,18 @@ class ComputerRepository {
 
     def findById(id: Long): Some[Computer] = Some(dao.get(classOf[Computer], id))
 
-    def page(pageable: Pageable, filter: String = ""): Page[Computer] = {
-        val dc = DetachedCriteria.forClass(classOf[Computer])
+    @Transactional
+    def list(pageable: Pageable, filter: String = ""): Pager[(Computer, Option[Company])] = {
+        var dc = DetachedCriteria.forClass(classOf[Computer])
+
         if (!Strings.isEmpty(filter))
-            dc.add(Restrictions.ilike("name", filter, MatchMode.ANYWHERE))
-        dao.getPage(dc, pageable).asInstanceOf[Page[Computer]]
+            dc = dc.add(Restrictions.ilike("name", filter, MatchMode.ANYWHERE))
+
+        val page = dao.getPage(dc, pageable)
+
+        log.debug(s"loaded Computer=[$page]")
+
+        val computers = page.asInstanceOf[Page[Computer]].getContent.map(c => (c, Option(c.company)))
+        Pager(computers, page.getNumber, page.getNumber * page.getSize, page.getTotalElements)
     }
 }

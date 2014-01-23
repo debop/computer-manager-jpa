@@ -5,6 +5,15 @@
 
     <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel"/>
 
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{ISO8601} %-5level [%thread] %logger{36}.%method : %msg%n</pattern>
+            <immediateFlush>true</immediateFlush>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
     <appender name="file" class="ch.qos.logback.core.FileAppender">
         <file>${application.home}/logs/application.log</file>
         <append>true</append>
@@ -21,7 +30,7 @@
 
         <prudent>true</prudent>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>daisy.search.log-%d{yyyy-MM-dd}-%i.txt</fileNamePattern>
+            <fileNamePattern>${application.home}/logs/application.log-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -35,6 +44,7 @@
     </appender>
 
     <root level="DEBUG">
+        <appender-ref ref="console"/>
         <appender-ref ref="rollingFile"/>
     </root>
 

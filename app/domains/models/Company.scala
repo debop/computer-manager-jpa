@@ -1,8 +1,8 @@
-package models
+package domains.models
 
 import javax.persistence._
-import org.hibernate.annotations.{DynamicUpdate, DynamicInsert}
 import kr.debop4s.data.model.HibernateEntity
+import org.hibernate.annotations.{DynamicUpdate, DynamicInsert}
 
 /**
  * Company
@@ -12,15 +12,16 @@ import kr.debop4s.data.model.HibernateEntity
 @DynamicInsert
 @DynamicUpdate
 @Access(AccessType.FIELD)
-class Company extends HibernateEntity[Long] {
+class Company extends HibernateEntity[java.lang.Long] {
 
     @Id
     @GeneratedValue
-    private var id: Long = _
+    @Column(name = "company_id")
+    private var id: java.lang.Long = _
 
-    def getId: Long = id
+    def getId: java.lang.Long = id
 
-    protected def setId(x: Long) {
+    protected def setId(x: java.lang.Long) {
         id = x
     }
 

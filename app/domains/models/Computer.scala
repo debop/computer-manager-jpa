@@ -1,11 +1,12 @@
-package models
+package domains.models
 
-import org.hibernate.annotations.{DynamicInsert, DynamicUpdate}
-import javax.persistence._
-import kr.debop4s.data.model.HibernateEntity
+import domains.repository.CompanyRepository
 import java.util.Date
+import javax.persistence._
+import kr.debop4s.core.spring.Springs
 import kr.debop4s.core.utils.Hashs
-import repository.CompanyRepository
+import kr.debop4s.data.model.HibernateEntity
+import org.hibernate.annotations.{DynamicInsert, DynamicUpdate}
 
 /**
  * Computer
@@ -16,13 +17,13 @@ import repository.CompanyRepository
 @DynamicInsert
 @DynamicUpdate
 @Access(AccessType.FIELD)
-class Computer extends HibernateEntity[Long] {
+class Computer extends HibernateEntity[java.lang.Long] {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "computer_seq")
-    var id: Long = _
+    var id: java.lang.Long = _
 
-    def getId: Long = id
+    def getId: java.lang.Long = id
 
     var name: String = _
 
@@ -41,8 +42,7 @@ class Computer extends HibernateEntity[Long] {
 
 object Computer {
 
-    // TODO: 여기서 Repository를 Injection 할 수 있어야 합니다.
-    lazy val companyRepository: CompanyRepository = new CompanyRepository()
+    lazy val companyRepository: CompanyRepository = Springs.getBean(classOf[CompanyRepository])
 
     def apply(id: Long, name: String, introduced: Option[Date], discontinued: Option[Date], companyId: Option[Long]) = {
         val computer = new Computer
@@ -57,10 +57,10 @@ object Computer {
     }
 
     def unapply(computer: Computer) = {
-        Some(computer.id,
+        Some(computer.id.toLong,
             computer.name,
             Some(computer.introduced),
             Some(computer.discontinued),
-            if (computer.company != null) Some(computer.company.getId) else None)
+            if (computer.company != null) Some(computer.company.getId.toLong) else None)
     }
 }

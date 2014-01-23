@@ -1,15 +1,15 @@
 package controllers
 
-import play.api.mvc._
-import play.api.data._
-import play.api.data.Forms._
-import views._
-import org.springframework.stereotype.Component
-import repository.{CompanyRepository, ComputerRepository}
+import domains.models.Computer
+import domains.repository.{CompanyRepository, ComputerRepository}
+import kr.debop4s.core.utils.Mappers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.{Sort, PageRequest}
-import models.Computer
-import kr.debop4s.core.utils.Mappers
+import org.springframework.stereotype.Component
+import play.api.data.Forms._
+import play.api.data._
+import play.api.mvc._
+import views._
 
 @Component
 class Application extends Controller {
@@ -37,15 +37,14 @@ class Application extends Controller {
     def list(page: Int, orderBy: Int, filter: String) = Action { implicit request =>
 
         val pageable = new PageRequest(page, 10, Sort.Direction.ASC, "id")
-        val list = computerRepository.page(pageable, filter)
+        val list = computerRepository.list(pageable, filter)
         Ok(html.list(list, orderBy, filter))
     }
 
     def edit(id: Long) = Action {
         computerRepository.findById(id).map {
             computer =>
-                val computerDto = Mappers.map[ComputerDto](computer)
-                Ok(html.editForm(id, computerForm.fill(computerDto), companyRepository.options))
+                Ok(html.editForm(id, computerForm.fill(computer), companyRepository.options))
         }.getOrElse {
             NotFound
         }
