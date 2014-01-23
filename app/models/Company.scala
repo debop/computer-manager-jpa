@@ -1,8 +1,8 @@
 package models
 
 import javax.persistence._
-import kr.debop4s.core.spring.Springs
-import kr.debop4s.data.model.HibernateEntity
+import kr.hconnect.core.spring.Springs
+import kr.hconnect.data.model.EntityBase
 import org.hibernate.annotations.{DynamicUpdate, DynamicInsert}
 import repository.CompanyJpaRepository
 import scala.collection.JavaConversions._
@@ -15,7 +15,7 @@ import scala.collection.JavaConversions._
 @DynamicInsert
 @DynamicUpdate
 @Access(AccessType.FIELD)
-class Company extends HibernateEntity[java.lang.Long] {
+class Company extends EntityBase[java.lang.Long] {
 
     @Id
     @GeneratedValue

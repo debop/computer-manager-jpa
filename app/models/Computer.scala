@@ -2,9 +2,9 @@ package models
 
 import java.util.Date
 import javax.persistence._
-import kr.debop4s.core.spring.Springs
-import kr.debop4s.core.utils.Hashs
-import kr.debop4s.data.model.HibernateEntity
+import kr.hconnect.core.spring.Springs
+import kr.hconnect.core.tools.HashTool
+import kr.hconnect.data.model.EntityBase
 import org.hibernate.annotations.{DynamicInsert, DynamicUpdate}
 import org.springframework.data.domain.Pageable
 import repository.ComputerJpaRepository
@@ -19,7 +19,7 @@ import scala.collection.JavaConversions._
 @DynamicInsert
 @DynamicUpdate
 @Access(AccessType.FIELD)
-class Computer extends HibernateEntity[java.lang.Long] {
+class Computer extends EntityBase[java.lang.Long] {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "computer_seq")
@@ -39,7 +39,7 @@ class Computer extends HibernateEntity[java.lang.Long] {
     @ManyToOne(cascade = Array(CascadeType.MERGE))
     var company: Company = _
 
-    override def hashCode(): Int = Hashs.compute(name)
+    override def hashCode(): Int = HashTool.compute(name)
 }
 
 object Computer {

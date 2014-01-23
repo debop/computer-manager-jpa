@@ -1,6 +1,6 @@
 
 import configs.SpringConfiguration
-import kr.debop4s.core.spring.Springs
+import kr.hconnect.core.spring.Springs
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
@@ -21,7 +21,7 @@ object Global extends GlobalSettings {
 
         super.onStart(app)
         ctx = new AnnotationConfigApplicationContext(classOf[SpringConfiguration])
-        Springs.initialize(ctx)
+        Springs.init(ctx)
 
         log.info("Application을 시작했습니다.")
     }
