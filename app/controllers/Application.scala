@@ -1,21 +1,23 @@
 package controllers
 
-import domains.models.Computer
-import domains.repository.{CompanyRepository, ComputerRepository}
-import kr.debop4s.core.utils.Mappers
+import models.Computer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.{Sort, PageRequest}
 import org.springframework.stereotype.Component
 import play.api.data.Forms._
 import play.api.data._
 import play.api.mvc._
+import repository.{ComputerJpaRepository, CompanyJpaRepository}
 import views._
 
 @Component
 class Application extends Controller {
 
-    @Autowired val computerRepository: ComputerRepository = null
-    @Autowired val companyRepository: CompanyRepository = null
+    //    @Autowired val computerRepository: ComputerRepository = null
+    //    @Autowired val companyRepository: CompanyRepository = null
+
+    @Autowired val computerRepository: ComputerJpaRepository = null
+    @Autowired val companyRepository: CompanyJpaRepository = null
 
     val Home = Redirect(routes.Application.list(0, 2, ""))
 
@@ -37,14 +39,14 @@ class Application extends Controller {
     def list(page: Int, orderBy: Int, filter: String) = Action { implicit request =>
 
         val pageable = new PageRequest(page, 10, Sort.Direction.ASC, "id")
-        val list = computerRepository.list(pageable, filter)
+        val list = Computer.list(pageable, filter)
         Ok(html.list(list, orderBy, filter))
     }
 
     def edit(id: Long) = Action {
-        computerRepository.findById(id).map {
+        Option(computerRepository.findOne(id)).map {
             computer =>
-                Ok(html.editForm(id, computerForm.fill(computer), companyRepository.options))
+                Ok(html.editForm(id, computerForm.fill(computer), companyOptions))
         }.getOrElse {
             NotFound
         }
@@ -52,26 +54,23 @@ class Application extends Controller {
 
     def update(id: Long) = Action { implicit request =>
         computerForm.bindFromRequest().fold(
-            formWithErrors => BadRequest(html.editForm(id, formWithErrors, companyRepository.options)),
-            computerDto => {
-                val computer = computerRepository.findById(id).get
-                Mappers.map(computerDto, computer)
-                computerRepository.update(computer)
+            formWithErrors => BadRequest(html.editForm(id, formWithErrors, companyOptions)),
+            computer => {
+                computerRepository.save(computer)
                 Home.flashing("success" -> s"Computer ${computer.name} has been updated")
             }
         )
     }
 
     def create = Action {
-        Ok(html.createForm(computerForm, companyRepository.options))
+        Ok(html.createForm(computerForm, companyOptions))
     }
 
     def save = Action {
         implicit request =>
             computerForm.bindFromRequest.fold(
-                formWithError => BadRequest(html.createForm(formWithError, companyRepository.options)),
-                computerDto => {
-                    val computer = Mappers.map[Computer](computerDto)
+                formWithError => BadRequest(html.createForm(formWithError, companyOptions)),
+                computer => {
                     computerRepository.save(computer)
                     Home.flashing("success" -> s"Computer ${computer.name} has been created")
                 }
@@ -81,6 +80,10 @@ class Application extends Controller {
     def delete(id: Long) = Action {
         computerRepository.delete(id)
         Home.flashing("success" -> "Computer has been deleted")
+    }
+
+    private def companyOptions: Seq[(String, String)] = {
+        List()
     }
 
 }

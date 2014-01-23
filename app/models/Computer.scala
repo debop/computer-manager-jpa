@@ -1,12 +1,14 @@
-package domains.models
+package models
 
-import domains.repository.CompanyRepository
 import java.util.Date
 import javax.persistence._
 import kr.debop4s.core.spring.Springs
 import kr.debop4s.core.utils.Hashs
 import kr.debop4s.data.model.HibernateEntity
 import org.hibernate.annotations.{DynamicInsert, DynamicUpdate}
+import org.springframework.data.domain.Pageable
+import repository.ComputerJpaRepository
+import scala.collection.JavaConversions._
 
 /**
  * Computer
@@ -42,7 +44,7 @@ class Computer extends HibernateEntity[java.lang.Long] {
 
 object Computer {
 
-    lazy val companyRepository: CompanyRepository = Springs.getBean(classOf[CompanyRepository])
+    lazy val repository: ComputerJpaRepository = Springs.getBean(classOf[ComputerJpaRepository])
 
     def apply(id: Long, name: String, introduced: Option[Date], discontinued: Option[Date], companyId: Option[Long]) = {
         val computer = new Computer
@@ -51,7 +53,7 @@ object Computer {
         computer.introduced = introduced.getOrElse(null)
         computer.discontinued = discontinued.getOrElse(null)
         if (companyId != None)
-            computer.company = companyRepository.findById(companyId.get).getOrElse(null)
+            computer.company = Company.findById(companyId.get)
 
         computer
     }
@@ -62,5 +64,29 @@ object Computer {
             Some(computer.introduced),
             Some(computer.discontinued),
             if (computer.company != null) Some(computer.company.getId.toLong) else None)
+    }
+
+    def update(computer: Computer) {
+        repository.save(computer)
+    }
+
+    def save(computer: Computer) {
+        repository.save(computer)
+    }
+
+    def delete(id: Long) {
+        repository.delete(id)
+    }
+
+    def findById(id: Long) = repository.findOne(id)
+
+    def list(pageable: Pageable, filter: String = ""): Pager[(Computer, Option[Company])] = {
+        val computers = repository.findAll(pageable)
+
+        val page = computers.getContent.map(c => (c, Option(c.company))).toSeq
+        Pager(page,
+            pageable.getPageNumber,
+            pageable.getPageNumber * pageable.getPageSize,
+            computers.getTotalElements)
     }
 }

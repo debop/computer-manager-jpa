@@ -1,8 +1,8 @@
 package configs
 
-import domains.models.Company
 import java.util.Properties
-import kr.debop4s.data.hibernate.config.AbstractHSqlHibernateConfiguration
+import kr.debop4s.data.jpa.config.AbstractHSqlJpaConfiguration
+import models.Company
 import org.hibernate.cfg.AvailableSettings
 import org.springframework.context.annotation.Configuration
 
@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Configuration
  * Created by debop on 2014. 1. 22..
  */
 @Configuration
-class JpaHSqlConfiguration extends AbstractHSqlHibernateConfiguration {
+class HSqlJpaConfiguration extends AbstractHSqlJpaConfiguration {
 
     def getMappedPackageNames: Array[String] =
         Array(classOf[Company].getPackage.getName)
 
-    override def hibernateProperties(): Properties = {
-        val props = super.hibernateProperties()
+    override def jpaProperties(): Properties = {
+        val props = super.jpaProperties()
         props.put(AvailableSettings.HBM2DDL_AUTO, "create-drop")
 
         props

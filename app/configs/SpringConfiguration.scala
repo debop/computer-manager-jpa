@@ -1,6 +1,7 @@
 package configs
 
 import org.springframework.context.annotation.{Import, ComponentScan, Configuration}
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.transaction.annotation.EnableTransactionManagement
 
 /**
@@ -9,9 +10,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
  */
 @Configuration
 @EnableTransactionManagement
-// @EnableJpaRepositories(basePackages = Array("repository"))
+@EnableJpaRepositories(basePackages = Array("repository"))
 @ComponentScan(basePackages = Array("controllers", "services", "domains.repository"))
-@Import(Array(classOf[JpaHSqlConfiguration]))
+@Import(Array(classOf[HSqlJpaConfiguration]))
 class SpringConfiguration {
 
 }

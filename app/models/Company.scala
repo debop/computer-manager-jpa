@@ -1,8 +1,11 @@
-package domains.models
+package models
 
 import javax.persistence._
+import kr.debop4s.core.spring.Springs
 import kr.debop4s.data.model.HibernateEntity
 import org.hibernate.annotations.{DynamicUpdate, DynamicInsert}
+import repository.CompanyJpaRepository
+import scala.collection.JavaConversions._
 
 /**
  * Company
@@ -31,6 +34,8 @@ class Company extends HibernateEntity[java.lang.Long] {
 
 object Company {
 
+    lazy val repository: CompanyJpaRepository = Springs.getBean[CompanyJpaRepository](classOf[CompanyJpaRepository])
+
     def apply(id: Long, name: String) = {
         val company = new Company
         company.setId(id)
@@ -40,5 +45,12 @@ object Company {
 
     def unapply(company: Company) = {
         Some(company.id, company.name)
+    }
+
+    def findById(id: java.lang.Long) = repository.findOne(id)
+
+    def options = {
+        val companies = repository.findAll()
+        companies.map(company => (company.getId.toString, company.name)).toSeq
     }
 }
