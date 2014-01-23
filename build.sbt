@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
     "kr.hconnect" % "hconnect-data" % "1.3.6-SNAPSHOT" changing(),
     "joda-time" % "joda-time" % "2.3",
     "org.apache.tomcat" % "tomcat-jdbc" % "7.0.47",
-    "org.hsqldb" % "hsqldb" % "2.3.0"
+    "org.hsqldb" % "hsqldb" % "2.3.0",
+    "com.mysema.querydsl" % "querydsl-scala" % "3.3.0"
 )
 
 resolvers ++= Seq(
