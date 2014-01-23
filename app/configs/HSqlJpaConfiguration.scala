@@ -20,8 +20,8 @@ class HSqlJpaConfiguration extends HSqlConfigBase {
 
     override def jpaProperties(): Properties = {
         val props = super.jpaProperties()
-        props.put(AvailableSettings.HBM2DDL_AUTO, "create-drop")
-
+        props.put(AvailableSettings.HBM2DDL_AUTO, "create")
+        props.put(AvailableSettings.SHOW_SQL, "false")
         props
     }
 }

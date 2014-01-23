@@ -9,8 +9,8 @@ libraryDependencies ++= Seq(
     "org.ow2.asm" % "asm-all" % "4.2",
     // "kr.debop4s" % "debop4s-core" % "1.0-SNAPSHOT" changing(),
     // "kr.debop4s" % "debop4s-data" % "1.0-SNAPSHOT" changing(),
-    "kr.hconnect" % "hconnect-core" % "1.3.6-SNAPSHOT",
-    "kr.hconnect" % "hconnect-data" % "1.3.6-SNAPSHOT" exclude("com.googlecode.xmemcached", "xmemcached"),
+    "kr.hconnect" % "hconnect-core" % "1.3.6-SNAPSHOT" changing(),
+    "kr.hconnect" % "hconnect-data" % "1.3.6-SNAPSHOT" changing(),
     "org.apache.tomcat" % "tomcat-jdbc" % "7.0.47",
     "org.hsqldb" % "hsqldb" % "2.3.0"
 )

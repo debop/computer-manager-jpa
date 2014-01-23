@@ -1,5 +1,5 @@
 @(computerForm: Form[Computer], companies: Seq[(String, String)])
-@import helper._
+    @import helper._
 
     @implicitFieldConstructor = @{
         FieldConstructor(twitterBootstrapInput.f)
@@ -26,7 +26,7 @@
             </fieldset>
 
             <div class="actions">
-                <input type="submit" value="Create this computer" class="btn primary"> or
+                <input type="submit" value="Create this computer" class="btn primary"> &nbsp;&nbsp;
                 <a href="@routes.Application.list()" class="btn">Cancel</a>
             </div>
         }

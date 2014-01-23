@@ -5,7 +5,6 @@
 
     <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel"/>
 
-
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{ISO8601} %-5level [%thread] %logger{36}.%method : %msg%n</pattern>
@@ -24,28 +23,31 @@
         </encoder>
     </appender>
 
-    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${application.home}/logs/application.log</file>
-        <append>true</append>
+    <!--<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--<file>${application.home}/logs/application.log</file>-->
+    <!--<append>true</append>-->
 
-        <prudent>true</prudent>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${application.home}/logs/application.log-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{ISO8601} %-5level [%thread] %logger{36}.%method : %msg%n</pattern>
-            <immediateFlush>false</immediateFlush>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
+    <!--<prudent>true</prudent>-->
+    <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+    <!--<fileNamePattern>${application.home}/logs/application.log-%d{yyyy-MM-dd}-%i.log</fileNamePattern>-->
+    <!--<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+    <!--<maxFileSize>10MB</maxFileSize>-->
+    <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+    <!--<maxHistory>30</maxHistory>-->
+    <!--</rollingPolicy>-->
+    <!--<encoder>-->
+    <!--<pattern>%d{ISO8601} %-5level [%thread] %logger{36}.%method : %msg%n</pattern>-->
+    <!--<immediateFlush>false</immediateFlush>-->
+    <!--<charset>UTF-8</charset>-->
+    <!--</encoder>-->
+    <!--</appender>-->
 
+    <logger name="play" level="INFO"/>
+    <logger name="application" level="DEBUG"/>
+    <logger name="controllers" level="DEBUG"/>
     <root level="DEBUG">
         <appender-ref ref="console"/>
-        <appender-ref ref="rollingFile"/>
+        <appender-ref ref="file"/>
     </root>
 
 </configuration>

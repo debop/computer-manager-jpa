@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import play.api.{Application, GlobalSettings}
+import services.Setup
 
 /**
  * Global
@@ -23,6 +24,7 @@ object Global extends GlobalSettings {
         ctx = new AnnotationConfigApplicationContext(classOf[SpringConfiguration])
         Springs.init(ctx)
 
+        Setup.buildSampleData()
         log.info("Application을 시작했습니다.")
     }
 

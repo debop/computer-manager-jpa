@@ -6,6 +6,8 @@ import kr.hconnect.data.model.EntityBase
 import org.hibernate.annotations.{DynamicUpdate, DynamicInsert}
 import repository.CompanyJpaRepository
 import scala.collection.JavaConversions._
+import com.google.common.base.Objects.ToStringHelper
+import kr.hconnect.core.tools.HashTool
 
 /**
  * Company
@@ -19,7 +21,7 @@ class Company extends EntityBase[java.lang.Long] {
 
     @Id
     @GeneratedValue
-    @Column(name = "company_id")
+    @Column(name = "companyId")
     private var id: java.lang.Long = _
 
     def getId: java.lang.Long = id
@@ -28,8 +30,13 @@ class Company extends EntityBase[java.lang.Long] {
         id = x
     }
 
-    // @Constraints.Required
     var name: String = _
+
+    override def hashCode(): Int = HashTool.compute(name)
+
+    override def buildStringHelper(): ToStringHelper =
+        super.buildStringHelper()
+            .add("name", name)
 }
 
 object Company {
@@ -37,7 +44,7 @@ object Company {
     lazy val repository: CompanyJpaRepository = Springs.getBean[CompanyJpaRepository](classOf[CompanyJpaRepository])
 
     def apply(id: Long, name: String) = {
-        val company = new Company
+        val company = new Company()
         company.setId(id)
         company.name = name
         company
@@ -47,7 +54,7 @@ object Company {
         Some(company.id, company.name)
     }
 
-    def findById(id: java.lang.Long) = repository.findOne(id)
+    def findById(id: Long) = repository.findOne(id)
 
     def options = {
         val companies = repository.findAll()
