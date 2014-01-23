@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
     // "kr.debop4s" % "debop4s-data" % "1.0-SNAPSHOT" changing(),
     "kr.hconnect" % "hconnect-core" % "1.3.6-SNAPSHOT" changing(),
     "kr.hconnect" % "hconnect-data" % "1.3.6-SNAPSHOT" changing(),
+    "joda-time" % "joda-time" % "2.3",
     "org.apache.tomcat" % "tomcat-jdbc" % "7.0.47",
     "org.hsqldb" % "hsqldb" % "2.3.0"
 )
